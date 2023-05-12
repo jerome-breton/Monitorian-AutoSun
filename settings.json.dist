@@ -1,0 +1,17 @@
+{
+    "lat": 48.858370,
+    "lon": 2.294481,
+    "sunrise_type": "civil",
+    "sunset_type": "civil",
+    "screens": [
+        {
+            "id": "all",
+            "min": 0,
+            "max": 100
+        },{
+            "id": "DISPLAY\\IVM560B\\7&30ba8413&0&UID260",
+            "min": 20,
+            "max": 100
+        }
+    ]
+}
