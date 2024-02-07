@@ -53,17 +53,17 @@ switch($settings.sunset_type){
 $end = (Get-Date $end)
 
 # Output date times
-Write-Host "Now:            "   -NoNewline -ForegroundColor DarkGreen
-Write-Host "$now"        -ForegroundColor Blue
+Write-Host "Now:        "   -NoNewline -ForegroundColor DarkGreen
+Write-Host "$now"                  -ForegroundColor Blue
 
-Write-Host "Sunset:         "   -NoNewline -ForegroundColor DarkGreen
-Write-Host "$begin"      -ForegroundColor Blue
+Write-Host "Sunset:     "   -NoNewline -ForegroundColor DarkGreen
+Write-Host "$begin"                -ForegroundColor Blue
 
-Write-Host "Noon:           "   -NoNewline -ForegroundColor DarkGreen
-Write-Host "$noon"       -ForegroundColor Blue
+Write-Host "Noon:       "   -NoNewline -ForegroundColor DarkGreen
+Write-Host "$noon"                 -ForegroundColor Blue
 
-Write-Host "Sunrise:        "   -NoNewline -ForegroundColor DarkGreen
-Write-Host "$end"        -ForegroundColor Blue
+Write-Host "Sunrise:    "   -NoNewline -ForegroundColor DarkGreen
+Write-Host "$end"                      -ForegroundColor Blue
 
 ###############################
 # Calculate global brightness #
@@ -84,8 +84,8 @@ if(($now -lt $begin) -or ($now -gt $end))
 }
 
 # Output brightness
-Write-Host "Brightness:     " -NoNewline -ForegroundColor DarkGreen
-Write-Host "$([Math]::Round(100 * $light))%"        -ForegroundColor Blue
+Write-Host "Brightness: "                -NoNewline -ForegroundColor DarkGreen
+Write-Host "$([Math]::Round(100 * $light))%"            -ForegroundColor Blue
 
 ###############################
 # Apply brightness to screens #
@@ -96,5 +96,15 @@ $settings.screens | ForEach-Object {
     $screenLight = [Math]::Round($_.min + ($_.max - $_.min) * $light)
     
     # Apply it
-    Monitorian /set $_.id $screenLight
+    $result = (Monitorian /set $_.id $screenLight)
+    
+    #Output apply result
+    Write-Host $_.id.replace('DISPLAY\','') -NoNewline -ForegroundColor Yellow
+    Write-Host ":	"                       -NoNewline -ForegroundColor Yellow
+    Write-Host "$screenLight%	"           -NoNewline -ForegroundColor Blue
+    if ($result -eq "Monitor is not found.") {
+        Write-Host " $result" -ForegroundColor Red
+    } else {
+        Write-Host $result.replace($_.id,'') -ForegroundColor Cyan
+    }
 }
